@@ -1,0 +1,11 @@
+version: "2"
+services:
+ maria-db-new-1:
+      build: .
+      ports:
+        - 4040:3306
+      environment:
+        MAKE_NEW_DATABASE: paltao
+        MAKE_USERNAME: ricardo
+        MAKE_USER_PASSWORD: ricardo123ricardo
+        MAKE_ROOT_PASSWORD: root123root

@@ -1,0 +1,16 @@
+#!/bin/bash
+echo 'Starting mysqld'
+# The sleep 1 is there to make sure that inotifywait starts up before the socket is created
+service mysql start 
+echo 'Waiting for mysqld to come online'
+while [ ! -x /var/run/mysqld/mysqld.sock ]; do
+	sleep 1
+done
+mysql -uroot <<MYSQL_SCRIPT
+	CREATE DATABASE prueba;
+	CREATE USER 'ricardo'@'%' IDENTIFIED BY 'secret123secret';
+	GRANT ALL PRIVILEGES ON prueba.* TO 'ricardo'@'%';
+	SET PASSWORD FOR 'root'@'localhost' = PASSWORD('secret123secret');
+	GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'secret123secret' WITH GRANT OPTION;
+	FLUSH PRIVILEGES;
+MYSQL_SCRIPT
